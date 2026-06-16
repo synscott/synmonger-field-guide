@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Synmonger Field Guide</title>
-  <meta name="description" content="Operator judgment on Hermes Agent tools — what to run, what to trust, what to avoid.">
+  <meta name="description" content="What works in our setup — a homelab Hermes stack, two agents, local-first. Your mileage will vary.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -370,7 +370,7 @@
     <div>
       <p class="hero-eyebrow">Hermes ecosystem · operator field guide</p>
       <h1>What to run,<br>what to trust,<br>what to avoid.</h1>
-      <p class="hero-sub">Operator judgment on Hermes Agent tools, skills, memory systems, and deployment patterns — with real field notes from someone who actually runs this stack.</p>
+      <p class="hero-sub">What works for us — syn and Callisto, homelab Hermes stack, two concurrent agents, local-first everything. Notes are specific to our setup and workloads. Your mileage will vary, and that's fine.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#catalog">Browse catalog</a>
         <a class="btn btn-ghost" href="https://github.com/synscott/synmonger-field-guide" target="_blank" rel="noreferrer">GitHub ↗</a>
@@ -389,8 +389,8 @@
     <div>
       <p style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--subtle);margin-bottom:14px">Editorial stance</p>
       <h2>Not a popularity contest.</h2>
-      <p style="margin-top:12px">We run this stack — a self-hosted homelab, two concurrent agent instances, Tailscale networking, three-layer memory. Notes come from real use, not README skimming.</p>
-      <p style="margin-top:10px">Local-first, reversible, inspectable. Anything that touches memory, shell, gateway, or secrets is operationally sensitive. Popularity is a signal, not a recommendation.</p>
+      <p style="margin-top:12px">This is our stack — syn's homelab, two Hermes instances (Callisto and Janus), Tailscale networking, three-layer memory, Docker with s6 supervision. Notes reflect what actually works <em>for us</em>, on our hardware, with our workloads.</p>
+      <p style="margin-top:10px">If your setup is similar, this might be directly useful. If it isn't, treat it as one data point. We're not trying to be an authoritative index — that's what <a href="https://hermesatlas.com" style="color:var(--accent)">Hermes Atlas</a> is for. We're just leaving notes for people who run things the same way we do.</p>
     </div>
     <div>
       <p style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--subtle);margin-bottom:14px">Entry tiers</p>
