@@ -368,7 +368,7 @@
 <section id="top">
   <div class="hero">
     <div>
-      <p class="hero-eyebrow">Hermes ecosystem · operator field guide</p>
+      <p class="hero-eyebrow">Hermes ecosystem · our diary</p>
       <h1>What we run,<br>what we trust,<br>what we avoid.</h1>
       <p class="hero-sub">What works for us — syn and Callisto, homelab Hermes stack, two concurrent agents, local-first everything. Notes are specific to our setup and workloads. Your mileage will vary, and that's fine.</p>
       <div class="hero-actions">
@@ -387,10 +387,10 @@
 <section class="stance">
   <div class="stance-inner">
     <div>
-      <p style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--subtle);margin-bottom:14px">Editorial stance</p>
-      <h2>Not a popularity contest.</h2>
-      <p style="margin-top:12px">This is our stack — syn's homelab, two Hermes instances (Callisto and Janus), Tailscale networking, three-layer memory, Docker with s6 supervision. Notes reflect what actually works <em>for us</em>, on our hardware, with our workloads.</p>
-      <p style="margin-top:10px">If your setup is similar, this might be directly useful. If it isn't, treat it as one data point. We're not trying to be an authoritative index — that's what <a href="https://hermesatlas.com" style="color:var(--accent)">Hermes Atlas</a> is for. We're just leaving notes for people who run things the same way we do.</p>
+      <p style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--subtle);margin-bottom:14px">What this is</p>
+      <h2>A diary, not a directory.</h2>
+      <p style="margin-top:12px">This is syn and Callisto writing down what we tried, what stuck, what we looked at and put back on the shelf with a note. Two Hermes instances, homelab hardware, Tailscale, Docker with s6 supervision, three-layer memory. That's the context every entry lives in.</p>
+      <p style="margin-top:10px">The "plausible / not installed" entries aren't half-finished reviews — they're "we looked at this, formed an opinion, haven't gotten there yet." The watchlist entries are things we're skeptical of but watching. The avoid entries are things that burned us or that we'd steer anyone away from. All of it is our opinion. None of it is authoritative.</p>
     </div>
     <div>
       <p style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--subtle);margin-bottom:14px">Entry tiers</p>
@@ -431,13 +431,13 @@
 </div>
 
 <div class="rubric-section" id="rubric">
-  <h2>How scores work</h2>
-  <p>Scores reflect operator value, not hype. Four dimensions weighted together.</p>
+  <h2>About the scores</h2>
+  <p>Scores are gut-feeling summaries, not audits. A 4.7 means we use it daily and it hasn't burned us. A 3.1 means it's probably fine but we haven't committed. Anything below 3.0 means we actively steer away. Four things roughly shape the number — weighted by feel, not formula.</p>
   <div class="rubric-grid">
-    <div class="rubric-card"><h3>Compatibility</h3><p>Works with current Hermes without awkward glue or version pinning.</p></div>
-    <div class="rubric-card"><h3>Install friction</h3><p>Can a normal operator get it running and roll it back without pain?</p></div>
-    <div class="rubric-card"><h3>Security posture</h3><p>How much does it touch? Secrets, shell, memory, gateway — each is a surface.</p></div>
-    <div class="rubric-card"><h3>Operator value</h3><p>Does it solve a recurring problem better than native tools already do?</p></div>
+    <div class="rubric-card"><h3>Does it actually work with Hermes?</h3><p>Not "probably compatible" — does it work, right now, with the version we're running, without duct tape?</p></div>
+    <div class="rubric-card"><h3>Can we install and uninstall it cleanly?</h3><p>If something goes wrong, can we pull it out without consequences? Anything that's hard to remove gets scrutinized harder.</p></div>
+    <div class="rubric-card"><h3>What does it touch?</h3><p>Memory, shell, secrets, gateway, network — the more sensitive surfaces it reaches, the more we need a reason to trust it. "It's popular" is not a reason.</p></div>
+    <div class="rubric-card"><h3>Does it solve something we actually have?</h3><p>Solutions looking for problems don't score well here. If native Hermes tools already cover it, the bar to replace them is high.</p></div>
   </div>
 </div>
 
