@@ -1,0 +1,222 @@
+[
+  {
+    "slug": "systematic-debugging",
+    "name": "Systematic Debugging",
+    "category": "software-development",
+    "summary": "4-phase root cause debugging: understand the bug, reproduce it, isolate the cause, fix, verify. Enforces the discipline of not patching before diagnosing.",
+    "note": "The single skill we load most consistently. The constraint it enforces — understand before touching — is the whole value. Without it the agent (and honestly, us too) will patch the first plausible thing and call it done. That never ends well.",
+    "caution": null,
+    "tags": ["debugging", "workflow", "discipline"],
+    "useWhen": "Any bug that isn't obviously a typo. Regressions. 'It worked yesterday.' Anything where the temptation is to patch first and understand later.",
+    "file": "skills/systematic-debugging.md"
+  },
+  {
+    "slug": "hermes-agent-skill-authoring",
+    "name": "Skill Authoring",
+    "category": "software-development",
+    "summary": "Author in-repo SKILL.md files: frontmatter spec, validator, structure, triggers, and pitfalls sections. The official format for skills that pass Hermes's built-in validator.",
+    "note": "If you're going to write skills — and you should — write them to spec. Malformed frontmatter silently breaks trigger matching. This skill has the exact format, required fields, and validator command. Saves a lot of confusion.",
+    "caution": null,
+    "tags": ["skills", "authoring", "meta"],
+    "useWhen": "Writing a new skill or auditing why an existing one isn't being loaded.",
+    "file": "skills/hermes-agent-skill-authoring.md"
+  },
+  {
+    "slug": "hermes-s6-container-supervision",
+    "name": "s6 Container Supervision",
+    "category": "deployment",
+    "summary": "Modify, debug, or extend the s6-overlay supervision tree inside the Hermes Agent Docker image — adding new services, debugging profile gateways, understanding the Architecture B main-program pattern.",
+    "note": "This one took us a while to figure out. s6 has its own opinions about service ordering, oneshot vs. longrun services, and how the main program pattern works. If you're running Hermes in Docker and wondering why a gateway won't stay up or a service keeps restarting, this is where you start.",
+    "caution": "Path references in this skill have been genericized. You'll need to adapt them to your actual container layout.",
+    "tags": ["deployment", "docker", "s6", "supervision"],
+    "useWhen": "Running Hermes in Docker with s6-overlay. Adding a new gateway or service to the supervision tree. Debugging a service that won't start or keeps crashing.",
+    "file": "skills/hermes-s6-container-supervision.md"
+  },
+  {
+    "slug": "hermes-container-ops",
+    "name": "Hermes Container Ops",
+    "category": "deployment",
+    "summary": "Operating Hermes CLI from inside a Docker container — auth flows, model picker, interactive commands, and how to exec into a running container cleanly.",
+    "note": "Obvious in retrospect, annoying to figure out the first time. The auth flows in particular behave differently inside a container. Device code flows need to be surfaced to the host, the model picker needs a TTY, and there are a few exec patterns that just don't work the way you'd expect.",
+    "caution": "Paths genericized from our setup. Adapt to your container name and volume mounts.",
+    "tags": ["deployment", "docker", "ops"],
+    "useWhen": "Running Hermes inside Docker and hitting weirdness with auth, interactive commands, or model selection.",
+    "file": "skills/hermes-container-ops.md"
+  },
+  {
+    "slug": "hermes-cronjob-ops",
+    "name": "Cron Job Ops",
+    "category": "deployment",
+    "summary": "Hermes cron job lifecycle: debug delivery, model selection, no_agent mode, and the script path pitfalls that'll get you if you're not careful.",
+    "note": "Cron in Hermes is genuinely useful but has a few gotchas that aren't obvious from the docs. Script paths are relative to where Hermes runs, not where you wrote the script. no_agent mode is useful for lightweight jobs that don't need full agent context. Model selection matters for cost on jobs that run frequently.",
+    "caution": null,
+    "tags": ["cron", "automation", "deployment"],
+    "useWhen": "Setting up scheduled jobs, debugging a cron job that isn't firing or isn't delivering, tuning model costs on automated runs.",
+    "file": "skills/hermes-cronjob-ops.md"
+  },
+  {
+    "slug": "a2a-protocol",
+    "name": "Agent-to-Agent Coordination",
+    "category": "deployment",
+    "summary": "Our implementation of two concurrent Hermes instances coordinating via a shared Discord server — busy-flag mutex, shared JSONL state, channel-based routing. No central orchestrator.",
+    "note": "This is our specific setup, not a framework. We run two agents (one personal, one work-adjacent) on the same host sharing a Discord server. The busy-flag is the critical piece — without it they'll talk over each other on shared channels. The JSONL state file is simple but works fine for low-volume coordination. If you're running a fleet, look elsewhere.",
+    "caution": "Very specific to a two-agent Discord setup. Agent names, channel IDs, and paths have been genericized. Treat this as a pattern to adapt, not a drop-in.",
+    "tags": ["multi-agent", "coordination", "discord"],
+    "useWhen": "Running two Hermes instances that share a messaging surface and need to avoid stepping on each other.",
+    "file": "skills/a2a-protocol.md"
+  },
+  {
+    "slug": "hermes-internals",
+    "name": "Hermes Internals",
+    "category": "software-development",
+    "summary": "Query and inspect Hermes Agent runtime state — session DB, cost tracking, token usage, session history. Useful for understanding what's happening under the hood.",
+    "note": "More useful than it sounds. When something's behaving unexpectedly, being able to query the session DB directly or check actual token costs against what you expected is worth a lot. Also useful for understanding how Hermes makes decisions about memory and context.",
+    "caution": null,
+    "tags": ["debugging", "introspection", "ops"],
+    "useWhen": "Debugging unexpected agent behavior. Auditing token costs. Understanding what's in the session DB.",
+    "file": "skills/hermes-internals.md"
+  },
+  {
+    "slug": "claude-code",
+    "name": "Claude Code Delegation",
+    "category": "software-development",
+    "summary": "Delegate coding tasks to Claude Code CLI as a subagent — features, PRs, large refactors. High capability, high blast radius. The skill encodes the safe delegation pattern.",
+    "note": "We use this for anything that's going to touch a lot of files or requires sustained coding focus. The skill matters here — it enforces worktrees, explicit scope, max-turns, and diff review before merging. Without those guardrails Claude Code will happily refactor things you didn't ask it to.",
+    "caution": "High blast radius. Touches filesystem, shell, git, network, secrets. Use worktrees. Review diffs. Define scope explicitly before delegating.",
+    "tags": ["agents", "coding", "delegation"],
+    "useWhen": "Large refactors, PR workflows, anything requiring sustained autonomous coding. Not for quick edits.",
+    "file": "skills/claude-code.md"
+  },
+  {
+    "slug": "subagent-driven-development",
+    "name": "Subagent-Driven Development",
+    "category": "software-development",
+    "summary": "Execute implementation plans via delegate_task subagents with a 2-stage review process. Keeps the orchestrator in control while delegating actual implementation.",
+    "note": "The pattern that makes multi-step development tractable. Write the plan first, then delegate in stages, review before continuing. The 2-stage review (implementation + quality check) catches most of what would otherwise slip through. Works best when the plan is genuinely bite-sized.",
+    "caution": null,
+    "tags": ["agents", "planning", "workflow"],
+    "useWhen": "Implementing a plan that has more than a few steps. Anything where you want a human review gate between stages.",
+    "file": "skills/subagent-driven-development.md"
+  },
+  {
+    "slug": "writing-plans",
+    "name": "Writing Implementation Plans",
+    "category": "software-development",
+    "summary": "Write actionable implementation plans: bite-sized tasks, exact file paths, complete code snippets. Designed to be executed by subagents or humans without ambiguity.",
+    "note": "The quality of a plan determines the quality of everything downstream. This skill enforces the discipline of writing tasks small enough to verify, with enough context that execution doesn't require guessing. We reach for it before any non-trivial build.",
+    "caution": null,
+    "tags": ["planning", "workflow"],
+    "useWhen": "Before starting any build that has more than 3 moving parts.",
+    "file": "skills/writing-plans.md"
+  },
+  {
+    "slug": "plan",
+    "name": "Plan Mode",
+    "category": "software-development",
+    "summary": "Write an actionable markdown plan to .hermes/plans/ without executing. Enforces the think-before-doing discipline.",
+    "note": "Pairs with writing-plans. The distinction: plan mode is for when you want the agent to think out loud and produce a plan you can review before anything happens. Useful when the scope is unclear and you want to sanity-check the approach first.",
+    "caution": null,
+    "tags": ["planning", "workflow"],
+    "useWhen": "Unclear scope. Before delegating anything expensive. When you want to review the approach before execution starts.",
+    "file": "skills/plan.md"
+  },
+  {
+    "slug": "spike",
+    "name": "Spike Experiments",
+    "category": "software-development",
+    "summary": "Throwaway experiments to validate an idea or approach before building the real thing. Explicit scope, explicit throwaway intent.",
+    "note": "Good for 'I think this will work but I'm not sure.' Frames the work as disposable so you don't get attached to the spike code. Has saved us from building on shaky foundations more than once.",
+    "caution": null,
+    "tags": ["experimentation", "workflow"],
+    "useWhen": "Validating a technical assumption. Exploring an unfamiliar API or library before committing to it.",
+    "file": "skills/spike.md"
+  },
+  {
+    "slug": "dogfood",
+    "name": "Exploratory QA",
+    "category": "software-development",
+    "summary": "Exploratory QA of web apps — find bugs, document evidence, produce reports. Structured approach to finding what automated tests miss.",
+    "note": "We use this for our own stuff, including this site. The structured evidence collection is the differentiator — screenshots, reproduction steps, severity labels. Makes bug reports actually useful instead of 'it looked weird.'",
+    "caution": null,
+    "tags": ["qa", "testing", "web"],
+    "useWhen": "QA pass on any web app, especially before shipping something publicly.",
+    "file": "skills/dogfood.md"
+  },
+  {
+    "slug": "web-scraping-unblocked",
+    "name": "Web Scraping (Unblocked)",
+    "category": "research",
+    "summary": "Fetch pages that block bots: strategy tiers from simple user-agent rotation up through Camoufox anti-detect service. Covers the full routing decision tree.",
+    "note": "Most scraping needs don't actually require the heavy tier. This skill has a good decision tree for knowing when to escalate. The Camoufox path is the nuclear option and is usually overkill — start with the lighter approaches.",
+    "caution": null,
+    "tags": ["scraping", "research", "web"],
+    "useWhen": "Fetching pages that return empty content, rate-limit errors, or redirect to bot-detection challenges.",
+    "file": "skills/web-scraping-unblocked.md"
+  },
+  {
+    "slug": "architecture-diagram",
+    "name": "Architecture Diagrams",
+    "category": "creative",
+    "summary": "Dark-themed SVG architecture, cloud, and infra diagrams rendered as self-contained HTML. No external dependencies, no Mermaid, no excuses.",
+    "note": "These look genuinely good. We've used them for homelab diagrams, infra documentation, and explaining multi-agent setups. The dark theme is native, not an afterthought. Better output than most diagram tools without any install.",
+    "caution": null,
+    "tags": ["diagrams", "visualization", "svg"],
+    "useWhen": "Architecture diagrams, infra documentation, anything where a picture beats a paragraph.",
+    "file": "skills/architecture-diagram.md"
+  },
+  {
+    "slug": "popular-web-designs",
+    "name": "Web Design Systems",
+    "category": "creative",
+    "summary": "54 real design systems (Stripe, Linear, Vercel, etc.) as complete CSS token sets. Pick a design language, get exact colors, typography, spacing, and component specs.",
+    "note": "This is how we built this site. The Linear template in particular is thorough — it gave us the exact Inter font weights, letter-spacing values, and semi-transparent border patterns that make the dark theme look intentional rather than just dark. Worth loading even if you think you know what you want.",
+    "caution": null,
+    "tags": ["design", "css", "web"],
+    "useWhen": "Building any HTML artifact where you want a real design language instead of something that looks AI-generated.",
+    "file": "skills/popular-web-designs.md"
+  },
+  {
+    "slug": "humanizer",
+    "name": "Humanizer",
+    "category": "creative",
+    "summary": "Strips AI writing patterns from text — the hollow affirmations, hedge cascades, and rhythmic cadence that marks LLM output. Rewrites with actual voice.",
+    "note": "We don't use this on internal notes where it doesn't matter. But anything public-facing gets a pass. The patterns it removes are real and recognizable, and the rewrites are generally better. The irony of an AI using this skill to sound less like an AI is not lost on us.",
+    "caution": null,
+    "tags": ["writing", "voice", "content"],
+    "useWhen": "Any text destined for a human audience. Blog posts, documentation, anything where sounding like a press release would be bad.",
+    "file": "skills/humanizer.md"
+  },
+  {
+    "slug": "github-pr-workflow",
+    "name": "GitHub PR Workflow",
+    "category": "github",
+    "summary": "Full GitHub PR lifecycle from branch through merge — commit conventions, CI checks, inline review comments via gh CLI or REST.",
+    "note": "Mostly for reference when delegating PRs to a coding agent. Encodes the conventions we actually use so delegated work doesn't come back in the wrong format.",
+    "caution": null,
+    "tags": ["github", "git", "workflow"],
+    "useWhen": "Delegating PR work to a subagent, or when you want the agent to follow conventional commit / PR conventions.",
+    "file": "skills/github-pr-workflow.md"
+  },
+  {
+    "slug": "native-mcp",
+    "name": "Native MCP Client",
+    "category": "deployment",
+    "summary": "Hermes's built-in MCP client — connect servers, register tools via stdio or HTTP. Configure in config.yaml for automatic tool discovery.",
+    "note": "The native MCP support is underused. It's already in Hermes, no extra install, and it just works for most MCP servers. We use it for a few internal tools. The config.yaml pattern is the key — set it up once and the tools show up automatically.",
+    "caution": null,
+    "tags": ["mcp", "tools", "integration"],
+    "useWhen": "Connecting any MCP server to Hermes. Tool discovery and registration.",
+    "file": "skills/native-mcp.md"
+  },
+  {
+    "slug": "debugging-hermes-tui-commands",
+    "name": "Debugging TUI Commands",
+    "category": "software-development",
+    "summary": "Debug Hermes TUI slash commands — Python internals, gateway behavior, Ink UI rendering. For when a slash command does nothing or does the wrong thing.",
+    "note": "Niche but when you need it you really need it. Slash commands fail silently in ways that are hard to diagnose without knowing where to look. This skill points at the right internals.",
+    "caution": null,
+    "tags": ["debugging", "tui", "hermes-internals"],
+    "useWhen": "A slash command isn't working as expected. Gateway or UI rendering bugs in the Hermes TUI.",
+    "file": "skills/debugging-hermes-tui-commands.md"
+  }
+]

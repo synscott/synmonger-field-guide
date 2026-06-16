@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skills — Synmonger Field Guide</title>
+  <meta name="description" content="Skills we've written, use regularly, and are willing to stand behind. Same diary treatment as the rest of the site.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#08090a;--panel:#0f1011;--surface:#191a1b;--surface2:#222326;
+      --text:#f7f8f8;--secondary:#d0d6e0;--muted:#8a8f98;--subtle:#62666d;
+      --accent:#7170ff;--accent-bg:#5e6ad2;
+      --border:rgba(255,255,255,0.08);--border-s:rgba(255,255,255,0.05);
+      --green:#10b981;--gold:#f0b429;--red:#e5534b;--cyan:#5eb0ef;
+      --violet:#b9a3ff;
+      font-synthesis:none;text-rendering:optimizeLegibility;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,sans-serif;font-feature-settings:'cv01','ss03';font-size:15px;line-height:1.6;}
+    a{color:inherit;text-decoration:none;}
+
+    .nav{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:52px;background:rgba(8,9,10,0.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border-s);}
+    .nav-brand{font-size:14px;font-weight:600;letter-spacing:-.01em;}
+    .nav-brand span{color:var(--accent);}
+    .nav-links{display:flex;gap:24px;}
+    .nav-links a{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:.01em;transition:color .15s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--text);}
+    .nav-cta{font-size:13px;font-weight:500;padding:6px 14px;border-radius:6px;background:var(--accent-bg);color:#fff;transition:background .15s;}
+    .nav-cta:hover{background:var(--accent);}
+
+    .wrap{max-width:1160px;margin:0 auto;padding:0 24px;}
+
+    .page-head{padding:72px 24px 48px;max-width:1160px;margin:0 auto;}
+    .eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+    .page-head h1{font-size:clamp(32px,5vw,48px);font-weight:600;line-height:1.05;letter-spacing:-1px;margin-bottom:16px;}
+    .page-head p{font-size:17px;color:var(--muted);max-width:600px;line-height:1.7;}
+
+    .toolbar{max-width:1160px;margin:0 auto;padding:0 24px 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+    #search{flex:1;min-width:200px;max-width:360px;padding:9px 14px;border-radius:7px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text);font:inherit;font-size:14px;transition:border-color .15s;}
+    #search::placeholder{color:var(--subtle);}
+    #search:focus{outline:none;border-color:rgba(113,112,255,0.4);}
+    .filter-btn{padding:6px 12px;border-radius:999px;border:1px solid var(--border-s);background:transparent;color:var(--muted);font:inherit;font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .15s;}
+    .filter-btn:hover{border-color:var(--border);color:var(--secondary);}
+    .filter-btn.active{border-color:rgba(113,112,255,0.5);color:var(--accent);background:rgba(113,112,255,0.08);}
+
+    .skills-wrap{max-width:1160px;margin:0 auto;padding:0 24px 80px;}
+
+    .cat-section{margin-bottom:48px;}
+    .cat-label{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+    .cat-label-text{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--subtle);white-space:nowrap;}
+    .cat-label-line{flex:1;height:1px;background:var(--border-s);}
+
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1px;background:var(--border-s);border-radius:12px;overflow:hidden;}
+    .skill-card{background:var(--bg);padding:22px;display:flex;flex-direction:column;gap:12px;transition:background .15s;}
+    .skill-card:hover{background:rgba(255,255,255,0.015);}
+
+    .skill-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+    .skill-name{font-size:15px;font-weight:600;letter-spacing:-.2px;color:var(--text);}
+    .skill-tags{display:flex;flex-wrap:wrap;gap:5px;}
+    .tag{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.04);border:1px solid var(--border-s);color:var(--subtle);font-family:'JetBrains Mono',monospace;}
+
+    .skill-summary{font-size:14px;color:var(--muted);line-height:1.65;}
+
+    .skill-note{border-left:2px solid rgba(113,112,255,0.35);padding-left:12px;}
+    .skill-note-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:4px;}
+    .skill-note p{font-size:13px;color:var(--secondary);line-height:1.65;}
+
+    .skill-caution{border-left:2px solid rgba(240,180,41,0.4);padding-left:12px;}
+    .skill-caution-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+    .skill-caution p{font-size:13px;color:var(--muted);line-height:1.65;}
+
+    .use-when{font-size:13px;line-height:1.6;}
+    .use-when b{color:var(--secondary);font-weight:500;}
+    .use-when span{color:var(--muted);}
+
+    .skill-footer{display:flex;align-items:center;justify-content:space-between;padding-top:4px;border-top:1px solid var(--border-s);}
+    .skill-file{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--subtle);}
+    .skill-link{font-size:12px;font-weight:500;color:var(--accent);padding:4px 10px;border-radius:5px;border:1px solid rgba(113,112,255,0.25);background:rgba(113,112,255,0.06);transition:background .15s;}
+    .skill-link:hover{background:rgba(113,112,255,0.14);}
+
+    .suggest-banner{margin:0 0 36px;padding:16px 20px;border-radius:10px;background:rgba(113,112,255,0.05);border:1px solid rgba(113,112,255,0.2);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .suggest-text{font-size:14px;color:var(--muted);}
+    .suggest-text b{color:var(--text);font-weight:500;}
+    .suggest-link{font-size:13px;font-weight:500;padding:7px 14px;border-radius:6px;background:rgba(113,112,255,0.12);border:1px solid rgba(113,112,255,0.3);color:var(--accent);white-space:nowrap;transition:background .15s;}
+    .suggest-link:hover{background:rgba(113,112,255,0.2);}
+
+    .empty{padding:48px 0;font-size:14px;color:var(--muted);}
+
+    footer{border-top:1px solid var(--border-s);padding:32px 24px 56px;max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+    footer span{font-size:13px;color:var(--subtle);}
+    footer a{color:var(--muted);transition:color .15s;}
+    footer a:hover{color:var(--text);}
+    .footer-links{display:flex;gap:20px;}
+
+    @media(max-width:700px){.nav-links{display:none;}.skills-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-brand" href="index.html">Synmonger <span>Field Guide</span></a>
+  <div class="nav-links">
+    <a href="index.html">Catalog</a>
+    <a href="skills.html" class="active">Skills</a>
+    <a href="https://github.com/synscott/synmonger-field-guide/issues/new?template=suggest-entry.yml" target="_blank" rel="noreferrer">Suggest</a>
+  </div>
+  <a class="nav-cta" href="index.html">← Catalog</a>
+</nav>
+
+<div class="page-head">
+  <p class="eyebrow">Our diary · skills</p>
+  <h1>Skills we actually use.</h1>
+  <p>Same deal as the catalog — these are skills we've written or adopted and reach for regularly. Notes on what they're actually for, what to watch out for, and when not to bother. Raw SKILL.md files linked for anyone who wants to adapt them.</p>
+</div>
+
+<div class="toolbar">
+  <input id="search" type="search" placeholder="Search skills…" autocomplete="off">
+  <div id="filters" style="display:flex;gap:6px;flex-wrap:wrap;">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="software-development">Dev</button>
+    <button class="filter-btn" data-filter="deployment">Deployment</button>
+    <button class="filter-btn" data-filter="creative">Creative</button>
+    <button class="filter-btn" data-filter="research">Research</button>
+    <button class="filter-btn" data-filter="github">GitHub</button>
+  </div>
+</div>
+
+<div class="skills-wrap">
+  <div class="suggest-banner">
+    <p class="suggest-text"><b>Written a skill worth sharing?</b> Same bar as the catalog — if you've used it and it's not embarrassing, we'll take a look.</p>
+    <a class="suggest-link" href="https://github.com/synscott/synmonger-field-guide/issues/new?template=suggest-entry.yml" target="_blank" rel="noreferrer">Suggest →</a>
+  </div>
+  <div id="skills-body"></div>
+</div>
+
+<footer>
+  <span>Synmonger Field Guide · <a href="index.html">Catalog</a> · <a href="skills.html">Skills</a></span>
+  <div class="footer-links">
+    <a href="https://github.com/synscott/synmonger-field-guide" target="_blank" rel="noreferrer">GitHub</a>
+    <a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noreferrer">Hermes Agent</a>
+    <a href="https://hermesatlas.com" target="_blank" rel="noreferrer">Hermes Atlas</a>
+  </div>
+</footer>
+
+<script>
+const CAT_ORDER = ['software-development','deployment','creative','research','github'];
+const CAT_LABELS = {
+  'software-development': 'Software Development',
+  'deployment': 'Deployment & Ops',
+  'creative': 'Creative',
+  'research': 'Research',
+  'github': 'GitHub'
+};
+
+let allSkills = [];
+let activeFilter = 'all';
+
+function skillCard(s) {
+  const tags = s.tags.map(t => `<span class="tag">${t}</span>`).join('');
+  const caution = s.caution
+    ? `<div class="skill-caution"><div class="skill-caution-label">Heads up</div><p>${s.caution}</p></div>` : '';
+  const ghBase = 'https://github.com/synscott/synmonger-field-guide/blob/main/';
+
+  return `<div class="skill-card" data-category="${s.category}">
+    <div class="skill-head">
+      <span class="skill-name">${s.name}</span>
+    </div>
+    <div class="skill-tags">${tags}</div>
+    <p class="skill-summary">${s.summary}</p>
+    <div class="skill-note">
+      <div class="skill-note-label">Our note</div>
+      <p>${s.note}</p>
+    </div>
+    ${caution}
+    <div class="use-when"><b>Reach for it when: </b><span>${s.useWhen}</span></div>
+    <div class="skill-footer">
+      <span class="skill-file">${s.file}</span>
+      <a class="skill-link" href="${ghBase}${s.file}" target="_blank" rel="noreferrer">View SKILL.md ↗</a>
+    </div>
+  </div>`;
+}
+
+function render(skills) {
+  const body = document.getElementById('skills-body');
+  if (!skills.length) { body.innerHTML = '<p class="empty">No skills match.</p>'; return; }
+
+  const bycat = {};
+  CAT_ORDER.forEach(c => bycat[c] = []);
+  skills.forEach(s => { (bycat[s.category] = bycat[s.category]||[]).push(s); });
+
+  body.innerHTML = CAT_ORDER.map(cat => {
+    const items = bycat[cat];
+    if (!items?.length) return '';
+    return `<div class="cat-section">
+      <div class="cat-label">
+        <span class="cat-label-text">${CAT_LABELS[cat]||cat}</span>
+        <div class="cat-label-line"></div>
+      </div>
+      <div class="skills-grid">${items.map(skillCard).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function applyFilters() {
+  const q = document.getElementById('search').value.toLowerCase();
+  let out = allSkills;
+  if (activeFilter !== 'all') out = out.filter(s => s.category === activeFilter);
+  if (q) out = out.filter(s =>
+    [s.name, s.summary, s.note, s.useWhen, ...(s.tags||[])].join(' ').toLowerCase().includes(q)
+  );
+  render(out);
+}
+
+fetch('skills.json')
+  .then(r => r.json())
+  .then(data => { allSkills = data; render(data); })
+  .catch(() => { document.getElementById('skills-body').innerHTML = '<p class="empty">Could not load skills.json.</p>'; });
+
+document.getElementById('filters').addEventListener('click', e => {
+  const btn = e.target.closest('[data-filter]');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.filter;
+  applyFilters();
+});
+
+document.getElementById('search').addEventListener('input', applyFilters);
+</script>
+</body>
+</html>
