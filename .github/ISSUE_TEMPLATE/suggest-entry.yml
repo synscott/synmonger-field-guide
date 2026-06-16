@@ -1,0 +1,62 @@
+name: Suggest an entry
+description: Found something worth adding to the field guide?
+title: "[suggest] "
+labels: ["suggestion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We add things we've actually evaluated, not everything that exists. That said, good leads are welcome. Fill this out and we'll take a look.
+
+  - type: input
+    id: repo
+    attributes:
+      label: GitHub URL or project link
+      placeholder: https://github.com/owner/repo
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Core
+        - Memory & Context
+        - Skills
+        - Deployment & Infra
+        - Multi-Agent
+        - Developer Tools
+        - Workspaces & GUIs
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why does it belong here?
+      description: What problem does it solve? What makes it worth evaluating? If you've used it, say so.
+      placeholder: Used it for X, it handles Y better than Z...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: used
+    attributes:
+      label: Have you used it?
+      options:
+        - "Yes — field tested"
+        - "No — looks promising"
+        - "No — but I've read the code"
+    validations:
+      required: true
+
+  - type: textarea
+    id: concerns
+    attributes:
+      label: Any concerns or caveats?
+      description: Surfaces it touches, install friction, security flags, stale maintenance — anything that would affect the risk label.
+      placeholder: Requires network access to X, last commit was 6 months ago...
+    validations:
+      required: false

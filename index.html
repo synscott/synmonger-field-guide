@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Synmonger Field Guide</title>
+  <meta name="description" content="Operator judgment on Hermes Agent tools — what to run, what to trust, what to avoid.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #08090a;
+      --panel:    #0f1011;
+      --surface:  #191a1b;
+      --surface2: #222326;
+      --text:     #f7f8f8;
+      --secondary:#d0d6e0;
+      --muted:    #8a8f98;
+      --subtle:   #62666d;
+      --accent:   #7170ff;
+      --accent-bg:#5e6ad2;
+      --border:   rgba(255,255,255,0.08);
+      --border-s: rgba(255,255,255,0.05);
+      --green:    #10b981;
+      --gold:     #f0b429;
+      --red:      #e5534b;
+      --cyan:     #5eb0ef;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-feature-settings: 'cv01','ss03';
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ─────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 28px; height: 52px;
+      background: rgba(8,9,10,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-s);
+    }
+    .nav-brand {
+      font-size: 14px; font-weight: 600; letter-spacing: -.01em;
+      color: var(--text);
+    }
+    .nav-brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a {
+      font-size: 13px; font-weight: 500; color: var(--muted);
+      letter-spacing: .01em;
+      transition: color .15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      font-size: 13px; font-weight: 500;
+      padding: 6px 14px; border-radius: 6px;
+      background: var(--accent-bg); color: #fff;
+      transition: background .15s;
+    }
+    .nav-cta:hover { background: var(--accent); }
+
+    /* ── LAYOUT ──────────────────────────────────────────────── */
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── HERO ────────────────────────────────────────────────── */
+    .hero {
+      padding: 96px 24px 72px;
+      max-width: 1160px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: center;
+    }
+    .hero-eyebrow {
+      font-size: 11px; font-weight: 500; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: clamp(38px, 6vw, 58px);
+      font-weight: 600; line-height: 1.0;
+      letter-spacing: -1.2px;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .hero-sub {
+      font-size: 17px; font-weight: 400; line-height: 1.65;
+      color: var(--muted); max-width: 520px;
+      margin-bottom: 32px;
+    }
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 18px; border-radius: 6px;
+      font-size: 14px; font-weight: 500;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .btn-primary { background: var(--accent-bg); color: #fff; }
+    .btn-primary:hover { background: var(--accent); }
+    .btn-ghost {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      color: var(--secondary);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.07); color: var(--text); }
+    .hero-stats {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 0;
+    }
+    .stat-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      padding: 14px 22px;
+      border-bottom: 1px solid var(--border-s);
+    }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-num { font-size: 32px; font-weight: 600; letter-spacing: -1px; color: var(--text); }
+    .stat-label { font-size: 13px; color: var(--muted); }
+
+    /* ── STANCE ──────────────────────────────────────────────── */
+    .stance {
+      border-top: 1px solid var(--border-s);
+      border-bottom: 1px solid var(--border-s);
+      padding: 56px 0;
+      margin: 0;
+    }
+    .stance-inner {
+      max-width: 1160px; margin: 0 auto; padding: 0 24px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start;
+    }
+    .stance h2 {
+      font-size: 26px; font-weight: 600; letter-spacing: -.6px;
+      color: var(--text); margin-bottom: 12px;
+    }
+    .stance p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .tiers { display: flex; flex-direction: column; gap: 12px; }
+    .tier {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-s);
+      border-radius: 8px;
+    }
+    .tier-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      margin-top: 6px; flex-shrink: 0;
+    }
+    .tier-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .tier-desc { font-size: 13px; color: var(--muted); }
+
+    /* ── CATALOG ─────────────────────────────────────────────── */
+    .catalog-wrap { max-width: 1160px; margin: 0 auto; padding: 64px 24px; }
+    .catalog-header { margin-bottom: 28px; }
+    .catalog-header h2 {
+      font-size: 22px; font-weight: 600; letter-spacing: -.4px;
+      color: var(--text); margin-bottom: 20px;
+    }
+    .search-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+    #search {
+      flex: 1; min-width: 220px; max-width: 400px;
+      padding: 9px 14px; border-radius: 7px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--text); font: inherit; font-size: 14px;
+      transition: border-color .15s;
+    }
+    #search::placeholder { color: var(--subtle); }
+    #search:focus { outline: none; border-color: rgba(113,112,255,0.4); }
+    .filters { display: flex; gap: 6px; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 6px 12px; border-radius: 999px;
+      border: 1px solid var(--border-s);
+      background: transparent;
+      color: var(--muted); font: inherit; font-size: 12px; font-weight: 500;
+      letter-spacing: .06em; text-transform: uppercase;
+      cursor: pointer; transition: all .15s;
+    }
+    .filter-btn:hover { border-color: var(--border); color: var(--secondary); }
+    .filter-btn.active { border-color: rgba(113,112,255,0.5); color: var(--accent); background: rgba(113,112,255,0.08); }
+
+    /* ── CATEGORY SECTION ────────────────────────────────────── */
+    .cat-section { margin-bottom: 48px; }
+    .cat-label {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 16px;
+    }
+    .cat-label-text {
+      font-size: 11px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--subtle);
+      white-space: nowrap;
+    }
+    .cat-label-line { flex: 1; height: 1px; background: var(--border-s); }
+
+    /* ── CARDS ───────────────────────────────────────────────── */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px,1fr)); gap: 1px; background: var(--border-s); border-radius: 12px; overflow: hidden; }
+    .card {
+      background: var(--bg);
+      padding: 22px 22px 18px;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: background .15s;
+    }
+    .card:hover { background: rgba(255,255,255,0.015); }
+    .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .card-title-wrap { flex: 1; min-width: 0; }
+    .card-name {
+      font-size: 15px; font-weight: 600; letter-spacing: -.2px;
+      color: var(--text); line-height: 1.3;
+      transition: color .15s;
+    }
+    a.card-name:hover { color: var(--accent); }
+    .card-repo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; color: var(--subtle); margin-top: 3px;
+    }
+    .score-badge {
+      flex-shrink: 0;
+      width: 36px; height: 36px; border-radius: 8px;
+      display: grid; place-items: center;
+      font-size: 14px; font-weight: 600; letter-spacing: -.3px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-s);
+      color: var(--secondary);
+    }
+    .score-badge.high { color: var(--green); border-color: rgba(16,185,129,0.2); background: rgba(16,185,129,0.05); }
+    .score-badge.mid  { color: var(--gold);  border-color: rgba(240,180,41,0.2);  background: rgba(240,180,41,0.05);  }
+    .score-badge.low  { color: var(--muted); }
+    .card-summary { font-size: 14px; color: var(--muted); line-height: 1.65; }
+    .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+    .badge {
+      font-size: 11px; font-weight: 500; letter-spacing: .05em;
+      padding: 3px 9px; border-radius: 999px;
+      border: 1px solid var(--border-s);
+      color: var(--muted);
+    }
+    .badge-field-tested  { color: var(--green); border-color: rgba(16,185,129,0.25); background: rgba(16,185,129,0.07); }
+    .badge-plausible     { color: var(--cyan);  border-color: rgba(94,176,239,0.25);  background: rgba(94,176,239,0.06);  }
+    .badge-watchlist     { color: var(--gold);  border-color: rgba(240,180,41,0.25);  background: rgba(240,180,41,0.06);  }
+    .badge-avoid         { color: var(--red);   border-color: rgba(229,83,75,0.25);   background: rgba(229,83,75,0.06);   }
+    .badge-risk-high     { color: var(--red);   border-color: rgba(229,83,75,0.2); }
+    .badge-risk-medium   { color: var(--gold);  border-color: rgba(240,180,41,0.2); }
+    .badge-risk-low      { color: var(--green); border-color: rgba(16,185,129,0.2); }
+    .badge-native        { color: #b9a3ff; border-color: rgba(185,163,255,0.2); }
+
+    /* ── BEST/NOT ────────────────────────────────────────────── */
+    .card-meta { display: flex; flex-direction: column; gap: 5px; }
+    .meta-row { font-size: 13px; line-height: 1.5; }
+    .meta-row b { color: var(--secondary); font-weight: 500; }
+    .meta-row span { color: var(--muted); }
+
+    /* ── FIELD NOTE ──────────────────────────────────────────── */
+    .field-note {
+      border-top: 1px solid var(--border-s);
+      padding-top: 12px;
+      margin-top: 2px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .field-note-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--subtle);
+      margin-bottom: 2px;
+    }
+    .note-rec {
+      font-size: 13px; color: var(--secondary); line-height: 1.6;
+      border-left: 2px solid rgba(113,112,255,0.4);
+      padding-left: 10px;
+    }
+    .note-meta { font-size: 12px; color: var(--subtle); line-height: 1.5; }
+    .note-meta b { color: var(--muted); font-weight: 500; }
+    .touches { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; }
+    .touch-tag {
+      font-size: 11px; padding: 2px 8px; border-radius: 4px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-s);
+      color: var(--subtle);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── SUGGEST BANNER ──────────────────────────────────────── */
+    .suggest-banner {
+      margin: 0 0 48px;
+      padding: 18px 22px;
+      border-radius: 10px;
+      background: rgba(113,112,255,0.05);
+      border: 1px solid rgba(113,112,255,0.2);
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .suggest-text { font-size: 14px; color: var(--muted); }
+    .suggest-text b { color: var(--text); font-weight: 500; }
+    .suggest-link {
+      font-size: 13px; font-weight: 500;
+      padding: 7px 14px; border-radius: 6px;
+      background: rgba(113,112,255,0.12);
+      border: 1px solid rgba(113,112,255,0.3);
+      color: var(--accent);
+      white-space: nowrap;
+      transition: background .15s;
+    }
+    .suggest-link:hover { background: rgba(113,112,255,0.2); }
+
+    /* ── RUBRIC ──────────────────────────────────────────────── */
+    .rubric-section {
+      border-top: 1px solid var(--border-s);
+      padding: 64px 24px;
+      max-width: 1160px; margin: 0 auto;
+    }
+    .rubric-section h2 { font-size: 22px; font-weight: 600; letter-spacing: -.4px; margin-bottom: 8px; }
+    .rubric-section p { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+    .rubric-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 12px; }
+    .rubric-card {
+      padding: 18px 20px;
+      border-radius: 10px;
+      border: 1px solid var(--border-s);
+      background: rgba(255,255,255,0.015);
+    }
+    .rubric-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .rubric-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* ── FOOTER ──────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border-s);
+      padding: 32px 24px 56px;
+      max-width: 1160px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    }
+    footer span { font-size: 13px; color: var(--subtle); }
+    footer a { color: var(--muted); transition: color .15s; }
+    footer a:hover { color: var(--text); }
+    .footer-links { display: flex; gap: 20px; }
+
+    /* ── EMPTY ───────────────────────────────────────────────── */
+    .empty { padding: 48px 0; font-size: 14px; color: var(--muted); }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; padding: 64px 20px 48px; }
+      .hero-stats { display: flex; }
+      .stat-row { flex: 1; flex-direction: column; gap: 2px; border-bottom: none; border-right: 1px solid var(--border-s); padding: 12px 16px; }
+      .stat-row:last-child { border-right: none; }
+      .stance-inner { grid-template-columns: 1fr; gap: 36px; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 560px) {
+      .hero-stats { flex-direction: column; }
+      .stat-row { border-right: none; border-bottom: 1px solid var(--border-s); }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-brand" href="#top">Synmonger <span>Field Guide</span></a>
+  <div class="nav-links">
+    <a href="#catalog">Catalog</a>
+    <a href="#rubric">Rubric</a>
+    <a href="https://github.com/synscott/synmonger-field-guide/issues/new?template=suggest-entry.yml" target="_blank" rel="noreferrer">Suggest</a>
+  </div>
+  <a class="nav-cta" href="#catalog">Browse →</a>
+</nav>
+
+<section id="top">
+  <div class="hero">
+    <div>
+      <p class="hero-eyebrow">Hermes ecosystem · operator field guide</p>
+      <h1>What to run,<br>what to trust,<br>what to avoid.</h1>
+      <p class="hero-sub">Operator judgment on Hermes Agent tools, skills, memory systems, and deployment patterns — with real field notes from someone who actually runs this stack.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#catalog">Browse catalog</a>
+        <a class="btn btn-ghost" href="https://github.com/synscott/synmonger-field-guide" target="_blank" rel="noreferrer">GitHub ↗</a>
+      </div>
+    </div>
+    <aside class="hero-stats">
+      <div class="stat-row"><span class="stat-num" id="entryCount">—</span><span class="stat-label">entries</span></div>
+      <div class="stat-row"><span class="stat-num" id="testedCount">—</span><span class="stat-label">field-tested</span></div>
+      <div class="stat-row"><span class="stat-num" id="catCount">—</span><span class="stat-label">categories</span></div>
+    </aside>
+  </div>
+</section>
+
+<section class="stance">
+  <div class="stance-inner">
+    <div>
+      <p style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--subtle);margin-bottom:14px">Editorial stance</p>
+      <h2>Not a popularity contest.</h2>
+      <p style="margin-top:12px">We run this stack — a self-hosted homelab, two concurrent agent instances, Tailscale networking, three-layer memory. Notes come from real use, not README skimming.</p>
+      <p style="margin-top:10px">Local-first, reversible, inspectable. Anything that touches memory, shell, gateway, or secrets is operationally sensitive. Popularity is a signal, not a recommendation.</p>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--subtle);margin-bottom:14px">Entry tiers</p>
+      <div class="tiers">
+        <div class="tier"><div class="tier-dot" style="background:var(--green)"></div><div><div class="tier-name">Field-tested</div><div class="tier-desc">Installed, used, noted from real operation.</div></div></div>
+        <div class="tier"><div class="tier-dot" style="background:var(--cyan)"></div><div><div class="tier-name">Plausible</div><div class="tier-desc">Promising and maintained — not yet installed.</div></div></div>
+        <div class="tier"><div class="tier-dot" style="background:var(--gold)"></div><div><div class="tier-name">Watchlist</div><div class="tier-desc">Interesting but immature, stale, or unclear.</div></div></div>
+        <div class="tier"><div class="tier-dot" style="background:var(--red)"></div><div><div class="tier-name">Avoid</div><div class="tier-desc">Broken, unsafe, or misleading.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="catalog-wrap" id="catalog">
+  <div class="catalog-header">
+    <h2>Hermes ecosystem field entries</h2>
+    <div class="search-row">
+      <input id="search" type="search" placeholder="Search entries, notes, risks…" autocomplete="off">
+      <div class="filters" id="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="core">Core</button>
+        <button class="filter-btn" data-filter="memory">Memory</button>
+        <button class="filter-btn" data-filter="skills">Skills</button>
+        <button class="filter-btn" data-filter="deployment">Deployment</button>
+        <button class="filter-btn" data-filter="multi-agent">Multi-agent</button>
+        <button class="filter-btn" data-filter="developer-tools">Dev tools</button>
+        <button class="filter-btn" data-filter="workspaces">Workspaces</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="suggest-banner">
+    <p class="suggest-text"><b>Know something worth adding?</b> Good leads welcome — especially if you've actually used it.</p>
+    <a class="suggest-link" href="https://github.com/synscott/synmonger-field-guide/issues/new?template=suggest-entry.yml" target="_blank" rel="noreferrer">Suggest an entry →</a>
+  </div>
+
+  <div id="catalog-body"></div>
+</div>
+
+<div class="rubric-section" id="rubric">
+  <h2>How scores work</h2>
+  <p>Scores reflect operator value, not hype. Four dimensions weighted together.</p>
+  <div class="rubric-grid">
+    <div class="rubric-card"><h3>Compatibility</h3><p>Works with current Hermes without awkward glue or version pinning.</p></div>
+    <div class="rubric-card"><h3>Install friction</h3><p>Can a normal operator get it running and roll it back without pain?</p></div>
+    <div class="rubric-card"><h3>Security posture</h3><p>How much does it touch? Secrets, shell, memory, gateway — each is a surface.</p></div>
+    <div class="rubric-card"><h3>Operator value</h3><p>Does it solve a recurring problem better than native tools already do?</p></div>
+  </div>
+</div>
+
+<footer>
+  <span>Synmonger Field Guide · static HTML on <a href="https://www.nearlyfreespeech.net" target="_blank" rel="noreferrer">NearlyFreeSpeech</a></span>
+  <div class="footer-links">
+    <a href="https://github.com/synscott/synmonger-field-guide" target="_blank" rel="noreferrer">GitHub</a>
+    <a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noreferrer">Hermes Agent</a>
+    <a href="https://hermesatlas.com" target="_blank" rel="noreferrer">Hermes Atlas</a>
+  </div>
+</footer>
+
+<script>
+const CATEGORY_ORDER = ['core','memory','skills','deployment','multi-agent','developer-tools','workspaces'];
+const CATEGORY_LABELS = {
+  core: 'Core', memory: 'Memory & Context', skills: 'Skills',
+  deployment: 'Deployment & Infra', 'multi-agent': 'Multi-Agent',
+  'developer-tools': 'Developer Tools', workspaces: 'Workspaces & GUIs'
+};
+
+let allEntries = [];
+let activeFilter = 'all';
+
+function scoreClass(s) {
+  return s >= 4.3 ? 'high' : s >= 3.5 ? 'mid' : 'low';
+}
+
+function card(e) {
+  const href = e.repo.startsWith('local') ? null : `https://github.com/${e.repo}`;
+  const nameEl = href
+    ? `<a class="card-name" href="${href}" target="_blank" rel="noreferrer">${e.name}</a>`
+    : `<span class="card-name">${e.name}</span>`;
+
+  const relLabel = e.relationship === 'hermes-native' ? 'hermes-native' : e.relationship;
+  const relBadge = e.relationship === 'hermes-native'
+    ? `<span class="badge badge-native">native</span>` : '';
+
+  const touches = e.touches.map(t => `<span class="touch-tag">${t}</span>`).join('');
+  const notForEl = e.notFor?.length
+    ? `<div class="meta-row"><b>Not for: </b><span>${e.notFor.join(', ')}</span></div>` : '';
+
+  return `<div class="card" data-category="${e.category}">
+    <div class="card-head">
+      <div class="card-title-wrap">
+        ${nameEl}
+        <div class="card-repo">${e.repo}</div>
+      </div>
+      <div class="score-badge ${scoreClass(e.score)}">${e.score}</div>
+    </div>
+    <p class="card-summary">${e.summary}</p>
+    <div class="badges">
+      <span class="badge badge-${e.status}">${e.status.replace('-',' ')}</span>
+      <span class="badge badge-risk-${e.risk}">risk: ${e.risk}</span>
+      ${relBadge}
+    </div>
+    <div class="card-meta">
+      <div class="meta-row"><b>Best for: </b><span>${e.best.join(', ')}</span></div>
+      ${notForEl}
+    </div>
+    <div class="field-note">
+      <div class="field-note-label">Field note</div>
+      <div class="note-rec">${e.recommendation}</div>
+      <div class="note-meta">
+        <b>Verified:</b> ${e.verified}<br>
+        <b>Touches:</b>
+        <div class="touches">${touches}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderCatalog(entries) {
+  const body = document.getElementById('catalog-body');
+  if (!entries.length) { body.innerHTML = '<p class="empty">No entries match.</p>'; return; }
+
+  const bycat = {};
+  CATEGORY_ORDER.forEach(c => bycat[c] = []);
+  entries.forEach(e => { (bycat[e.category] = bycat[e.category]||[]).push(e); });
+
+  body.innerHTML = CATEGORY_ORDER.map(cat => {
+    const items = bycat[cat];
+    if (!items?.length) return '';
+    return `<div class="cat-section">
+      <div class="cat-label">
+        <span class="cat-label-text">${CATEGORY_LABELS[cat]||cat}</span>
+        <div class="cat-label-line"></div>
+      </div>
+      <div class="cards">${items.sort((a,b)=>b.score-a.score).map(card).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function applyFilters() {
+  const q = document.getElementById('search').value.toLowerCase();
+  let out = allEntries;
+  if (activeFilter !== 'all') out = out.filter(e => e.category === activeFilter);
+  if (q) out = out.filter(e =>
+    [e.name, e.summary, e.recommendation, e.verified, ...(e.best||[]), ...(e.notFor||[]), ...(e.touches||[]), e.repo]
+      .join(' ').toLowerCase().includes(q)
+  );
+  renderCatalog(out);
+}
+
+fetch('entries.json')
+  .then(r => r.json())
+  .then(data => {
+    allEntries = data;
+    document.getElementById('entryCount').textContent = data.length;
+    document.getElementById('testedCount').textContent = data.filter(e=>e.status==='field-tested').length;
+    document.getElementById('catCount').textContent = new Set(data.map(e=>e.category)).size;
+    renderCatalog(data);
+  })
+  .catch(() => {
+    document.getElementById('catalog-body').innerHTML = '<p class="empty">Could not load entries.json.</p>';
+  });
+
+document.getElementById('filters').addEventListener('click', e => {
+  const btn = e.target.closest('[data-filter]');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.filter;
+  applyFilters();
+});
+
+document.getElementById('search').addEventListener('input', applyFilters);
+</script>
+</body>
+</html>
