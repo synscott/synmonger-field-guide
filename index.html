@@ -419,6 +419,7 @@
         <button class="filter-btn" data-filter="multi-agent">Multi-agent</button>
         <button class="filter-btn" data-filter="developer-tools">Dev tools</button>
         <button class="filter-btn" data-filter="workspaces">Workspaces</button>
+        <button class="filter-btn" data-filter="advanced">Advanced</button>
       </div>
     </div>
   </div>
@@ -452,11 +453,12 @@
 </footer>
 
 <script>
-const CATEGORY_ORDER = ['core','memory','skills','deployment','multi-agent','developer-tools','workspaces'];
+const CATEGORY_ORDER = ['core','memory','skills','deployment','multi-agent','developer-tools','workspaces','advanced'];
 const CATEGORY_LABELS = {
   core: 'Core', memory: 'Memory & Context', skills: 'Skills',
   deployment: 'Deployment & Infra', 'multi-agent': 'Multi-Agent',
-  'developer-tools': 'Developer Tools', workspaces: 'Workspaces & GUIs'
+  'developer-tools': 'Developer Tools', workspaces: 'Workspaces & GUIs',
+  advanced: 'Advanced & Experimental'
 };
 
 let allEntries = [];
@@ -542,7 +544,7 @@ function applyFilters() {
   renderCatalog(out);
 }
 
-fetch('entries.json')
+fetch('entries.json?v=2')
   .then(r => r.json())
   .then(data => {
     allEntries = data;

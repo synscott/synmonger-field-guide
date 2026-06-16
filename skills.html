@@ -213,7 +213,7 @@ function applyFilters() {
   render(out);
 }
 
-fetch('skills.json')
+fetch('skills.json?v=2')
   .then(r => r.json())
   .then(data => { allSkills = data; render(data); })
   .catch(() => { document.getElementById('skills-body').innerHTML = '<p class="empty">Could not load skills.json.</p>'; });

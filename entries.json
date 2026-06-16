@@ -9,9 +9,24 @@
     "risk": "medium",
     "relationship": "hermes-native",
     "score": 4.6,
-    "best": ["primary agent runtime", "terminal and gateway deployments", "homelab and self-hosted setups"],
-    "notFor": ["quick one-shot tasks where a simple script would do", "environments where shell execution is a hard no"],
-    "touches": ["filesystem", "shell", "memory", "network", "gateway", "secrets", "cron"],
+    "best": [
+      "primary agent runtime",
+      "terminal and gateway deployments",
+      "homelab and self-hosted setups"
+    ],
+    "notFor": [
+      "quick one-shot tasks where a simple script would do",
+      "environments where shell execution is a hard no"
+    ],
+    "touches": [
+      "filesystem",
+      "shell",
+      "memory",
+      "network",
+      "gateway",
+      "secrets",
+      "cron"
+    ],
     "verified": "2026-06-16: running daily as primary agent. Two concurrent instances (Callisto + Janus) on the same host without conflict.",
     "recommendation": "Baseline. Treat configs, memory, gateway tokens, and profile state as operationally sensitive surfaces. Run under a dedicated service account, not root."
   },
@@ -25,9 +40,20 @@
     "risk": "low",
     "relationship": "hermes-native",
     "score": 4.7,
-    "best": ["profile memory and user preferences", "cross-session recall", "local-first environments with no cloud dependency"],
-    "notFor": ["relational or graph-style fact storage", "querying facts across multiple entities simultaneously"],
-    "touches": ["memory", "filesystem", "sqlite"],
+    "best": [
+      "profile memory and user preferences",
+      "cross-session recall",
+      "local-first environments with no cloud dependency"
+    ],
+    "notFor": [
+      "relational or graph-style fact storage",
+      "querying facts across multiple entities simultaneously"
+    ],
+    "touches": [
+      "memory",
+      "filesystem",
+      "sqlite"
+    ],
     "verified": "2026-06-16: memory store, session_search, and FTS5 recall in daily use across two profiles.",
     "recommendation": "Default to this first. The session DB is surprisingly capable for recall. Only reach for external memory when you've actually hit a ceiling here."
   },
@@ -36,16 +62,28 @@
     "name": "Honcho",
     "repo": "plastic-labs/honcho",
     "category": "memory",
-    "summary": "Dialectic memory layer — builds a persistent peer model (who the user is, what they want, how they communicate) using LLM reasoning over observed conversation. Surfaces as honcho_profile, honcho_search, honcho_reasoning, and honcho_conclude tools.",
+    "summary": "Dialectic memory layer \u2014 builds a persistent peer model (who the user is, what they want, how they communicate) using LLM reasoning over observed conversation. Surfaces as honcho_profile, honcho_search, honcho_reasoning, and honcho_conclude tools.",
     "status": "field-tested",
     "risk": "medium",
     "relationship": "compatible",
     "score": 4.1,
-    "best": ["long-term user modeling", "persona-aware responses that improve over time", "sessions where knowing the person matters more than knowing the facts"],
-    "notFor": ["factual key-value storage (use fact_store for that)", "low-latency recall (reasoning calls are not cheap)", "environments where you want zero external API calls"],
-    "touches": ["memory", "network", "api keys"],
-    "verified": "2026-06-16: running in production. honcho_profile and honcho_search in daily use. dialectic reasoning works but costs more than a straight lookup — use reasoning_level: minimal for factual queries.",
-    "recommendation": "Worth it for agents with long-running relationships with users. The peer model actually compounds — it gets more useful over time. Call honcho_search before honcho_reasoning; it's cheaper and often sufficient."
+    "best": [
+      "long-term user modeling",
+      "persona-aware responses that improve over time",
+      "sessions where knowing the person matters more than knowing the facts"
+    ],
+    "notFor": [
+      "factual key-value storage (use fact_store for that)",
+      "low-latency recall (reasoning calls are not cheap)",
+      "environments where you want zero external API calls"
+    ],
+    "touches": [
+      "memory",
+      "network",
+      "api keys"
+    ],
+    "verified": "2026-06-16: running in production. honcho_profile and honcho_search in daily use. dialectic reasoning works but costs more than a straight lookup \u2014 use reasoning_level: minimal for factual queries.",
+    "recommendation": "Worth it for agents with long-running relationships with users. The peer model actually compounds \u2014 it gets more useful over time. Call honcho_search before honcho_reasoning; it's cheaper and often sufficient."
   },
   {
     "slug": "holographic-fact-store",
@@ -57,10 +95,21 @@
     "risk": "low",
     "relationship": "hermes-native",
     "score": 4.5,
-    "best": ["relational facts about people and projects", "multi-entity reasoning (what connects X and Y?)", "contradiction detection across memory over time"],
-    "notFor": ["narrative or behavioral memory (Honcho does that better)", "high-frequency writes (trust scoring adds overhead)"],
-    "touches": ["filesystem", "sqlite", "memory"],
-    "verified": "2026-06-16: 13 facts stored, entity probe and reason queries working. Located at /opt/hermes/plugins/memory/holographic/.",
+    "best": [
+      "relational facts about people and projects",
+      "multi-entity reasoning (what connects X and Y?)",
+      "contradiction detection across memory over time"
+    ],
+    "notFor": [
+      "narrative or behavioral memory (Honcho does that better)",
+      "high-frequency writes (trust scoring adds overhead)"
+    ],
+    "touches": [
+      "filesystem",
+      "sqlite",
+      "memory"
+    ],
+    "verified": "2026-06-16: 13 facts stored, entity probe and reason queries working. Located at <your-hermes-plugins-path>/memory/holographic/.",
     "recommendation": "Use alongside native memory and Honcho, not instead of either. The three-layer stack (native + Honcho + fact_store) covers different shapes of memory. Probe entities before answering user questions about people or projects."
   },
   {
@@ -73,9 +122,19 @@
     "risk": "medium",
     "relationship": "compatible",
     "score": 3.5,
-    "best": ["cloud-managed memory with no self-hosting overhead", "teams sharing memory across multiple agents"],
-    "notFor": ["strict local-only environments", "operators who want to inspect and own their memory store directly"],
-    "touches": ["memory", "network", "api keys"],
+    "best": [
+      "cloud-managed memory with no self-hosting overhead",
+      "teams sharing memory across multiple agents"
+    ],
+    "notFor": [
+      "strict local-only environments",
+      "operators who want to inspect and own their memory store directly"
+    ],
+    "touches": [
+      "memory",
+      "network",
+      "api keys"
+    ],
     "verified": "Not installed. Reviewed architecture and docs. Cloud-first despite self-hosted option.",
     "recommendation": "Plausible if you're comfortable with managed infrastructure. For local-first operators, the native + Honcho + fact_store stack covers the same ground without phoning home."
   },
@@ -89,9 +148,20 @@
     "risk": "medium",
     "relationship": "compatible",
     "score": 3.4,
-    "best": ["knowledge graph memory for complex projects", "cited synthesis with source tracing"],
-    "notFor": ["lightweight personal memory", "operators who want minimal dependencies"],
-    "touches": ["filesystem", "memory", "local database", "network"],
+    "best": [
+      "knowledge graph memory for complex projects",
+      "cited synthesis with source tracing"
+    ],
+    "notFor": [
+      "lightweight personal memory",
+      "operators who want minimal dependencies"
+    ],
+    "touches": [
+      "filesystem",
+      "memory",
+      "local database",
+      "network"
+    ],
     "verified": "Reviewed, not installed. Experimental status in upstream.",
     "recommendation": "Sandbox first. Interesting for project-scale knowledge synthesis. Not a drop-in for personal memory until someone field-tests the install story."
   },
@@ -105,9 +175,16 @@
     "risk": "low",
     "relationship": "compatible",
     "score": 3.2,
-    "best": ["minimal offline memory experiments"],
-    "notFor": ["production use until someone verifies install + recall quality"],
-    "touches": ["filesystem", "memory"],
+    "best": [
+      "minimal offline memory experiments"
+    ],
+    "notFor": [
+      "production use until someone verifies install + recall quality"
+    ],
+    "touches": [
+      "filesystem",
+      "memory"
+    ],
     "verified": "Reviewed, not installed. Low activity on the repo.",
     "recommendation": "Low blast radius makes it worth a test if you want a zero-dep alternative. Needs a field report before recommending it."
   },
@@ -121,9 +198,19 @@
     "risk": "low",
     "relationship": "hermes-native",
     "score": 4.7,
-    "best": ["bugs with unclear cause", "regressions where the fix isn't obvious", "any situation where the temptation is to patch first and understand later"],
-    "notFor": ["typos and obvious one-line fixes"],
-    "touches": ["filesystem", "shell", "tests"],
+    "best": [
+      "bugs with unclear cause",
+      "regressions where the fix isn't obvious",
+      "any situation where the temptation is to patch first and understand later"
+    ],
+    "notFor": [
+      "typos and obvious one-line fixes"
+    ],
+    "touches": [
+      "filesystem",
+      "shell",
+      "tests"
+    ],
     "verified": "2026-06-16: in regular use. The 'understand before fixing' constraint alone pays for itself.",
     "recommendation": "Load this skill whenever a bug isn't obviously a typo. The four-phase structure (understand, reproduce, isolate, fix) is the right discipline, and having it encoded means the agent doesn't skip steps under pressure."
   },
@@ -137,9 +224,19 @@
     "risk": "low",
     "relationship": "hermes-native",
     "score": 4.3,
-    "best": ["large skill files", "SOUL and persona headers", "anything behavioral that doesn't need exact syntax preserved"],
-    "notFor": ["skills with precise CLI commands or copy-paste code blocks — compression can corrupt exact syntax"],
-    "touches": ["skills", "prompts", "filesystem"],
+    "best": [
+      "large skill files",
+      "SOUL and persona headers",
+      "anything behavioral that doesn't need exact syntax preserved"
+    ],
+    "notFor": [
+      "skills with precise CLI commands or copy-paste code blocks \u2014 compression can corrupt exact syntax"
+    ],
+    "touches": [
+      "skills",
+      "prompts",
+      "filesystem"
+    ],
     "verified": "2026-06-16: used on 82 skills. Works well on behavioral content. Confirmed risky on exact command sequences.",
     "recommendation": "Use surgically. Good for prose-heavy behavioral content; dangerous on anything where the exact string matters. Always diff before committing compressed skills to production."
   },
@@ -153,11 +250,19 @@
     "risk": "medium",
     "relationship": "compatible",
     "score": 3.1,
-    "best": ["operators who run repetitive workflows and want auto-captured skills"],
-    "notFor": ["production environments where you want full control over what's in your skill corpus"],
-    "touches": ["skills", "filesystem", "shell"],
+    "best": [
+      "operators who run repetitive workflows and want auto-captured skills"
+    ],
+    "notFor": [
+      "production environments where you want full control over what's in your skill corpus"
+    ],
+    "touches": [
+      "skills",
+      "filesystem",
+      "shell"
+    ],
     "verified": "Not installed. Concept is interesting but auto-generated skills can accumulate quietly.",
-    "recommendation": "Interesting idea. Concern is quality control — auto-generated skills mixed into a working corpus can introduce silent regressions. Would want a review gate before any auto-merged skill."
+    "recommendation": "Interesting idea. Concern is quality control \u2014 auto-generated skills mixed into a working corpus can introduce silent regressions. Would want a review gate before any auto-merged skill."
   },
   {
     "slug": "avoid-ai-writing",
@@ -169,9 +274,17 @@
     "risk": "low",
     "relationship": "compatible",
     "score": 3.6,
-    "best": ["content destined for public audiences", "anywhere voice consistency matters"],
-    "notFor": ["internal notes and technical docs where AI-ness doesn't matter"],
-    "touches": ["filesystem", "prompts"],
+    "best": [
+      "content destined for public audiences",
+      "anywhere voice consistency matters"
+    ],
+    "notFor": [
+      "internal notes and technical docs where AI-ness doesn't matter"
+    ],
+    "touches": [
+      "filesystem",
+      "prompts"
+    ],
     "verified": "Not installed. Well-maintained, clear purpose.",
     "recommendation": "Worth adding if you generate content for human audiences. The problem it solves is real and the approach (pattern audit + rewrite) is sound."
   },
@@ -185,11 +298,21 @@
     "risk": "low",
     "relationship": "hermes-native",
     "score": 4.3,
-    "best": ["VPS and homelab production deployments", "any gateway-exposed instance"],
-    "notFor": ["quick local dev where you don't care about privilege isolation"],
-    "touches": ["systemd", "filesystem", "secrets", "gateway"],
+    "best": [
+      "VPS and homelab production deployments",
+      "any gateway-exposed instance"
+    ],
+    "notFor": [
+      "quick local dev where you don't care about privilege isolation"
+    ],
+    "touches": [
+      "systemd",
+      "filesystem",
+      "secrets",
+      "gateway"
+    ],
     "verified": "2026-06-16: systemd service, file ownership, and env-file pattern verified in production.",
-    "recommendation": "Default production posture. Inspect file ownership and env-file permissions before changing a running agent — they drift easily when you're installing as a different user than the service account."
+    "recommendation": "Default production posture. Inspect file ownership and env-file permissions before changing a running agent \u2014 they drift easily when you're installing as a different user than the service account."
   },
   {
     "slug": "hermes-container-s6",
@@ -201,11 +324,23 @@
     "risk": "low",
     "relationship": "hermes-native",
     "score": 4.4,
-    "best": ["running multiple concurrent Hermes instances on one host", "environments where container isolation is preferred", "homelab setups with Proxmox or similar"],
-    "notFor": ["simple single-instance setups where systemd is sufficient"],
-    "touches": ["filesystem", "shell", "gateway", "secrets", "network"],
+    "best": [
+      "running multiple concurrent Hermes instances on one host",
+      "environments where container isolation is preferred",
+      "homelab setups with Proxmox or similar"
+    ],
+    "notFor": [
+      "simple single-instance setups where systemd is sufficient"
+    ],
+    "touches": [
+      "filesystem",
+      "shell",
+      "gateway",
+      "secrets",
+      "network"
+    ],
     "verified": "2026-06-16: two instances (Callisto, Janus) running concurrently on containership via this pattern. s6 supervision handles restarts cleanly.",
-    "recommendation": "Solid pattern once you understand s6's supervision tree model. The main gotcha: s6 services use their own init sequence — don't mix shell backgrounding tricks with s6 managed processes. See hermes-s6-container-supervision skill."
+    "recommendation": "Solid pattern once you understand s6's supervision tree model. The main gotcha: s6 services use their own init sequence \u2014 don't mix shell backgrounding tricks with s6 managed processes. See hermes-s6-container-supervision skill."
   },
   {
     "slug": "a2a-protocol",
@@ -217,11 +352,22 @@
     "risk": "low",
     "relationship": "hermes-native",
     "score": 4.2,
-    "best": ["two-agent setups where instances need to coordinate without stepping on each other", "homelab multi-agent where both instances share a messaging surface"],
-    "notFor": ["fleet-scale orchestration (this is a two-agent pattern, not a framework)", "environments without persistent shared filesystem"],
-    "touches": ["filesystem", "shell", "gateway", "network"],
+    "best": [
+      "two-agent setups where instances need to coordinate without stepping on each other",
+      "homelab multi-agent where both instances share a messaging surface"
+    ],
+    "notFor": [
+      "fleet-scale orchestration (this is a two-agent pattern, not a framework)",
+      "environments without persistent shared filesystem"
+    ],
+    "touches": [
+      "filesystem",
+      "shell",
+      "gateway",
+      "network"
+    ],
     "verified": "2026-06-16: Callisto + Janus operating in parallel via this pattern. Busy-flag collision avoidance working. Shared state via /opt/data/a2a-state.jsonl.",
-    "recommendation": "Works well for a two-agent homelab setup. The busy-flag is essential — without it the instances will talk over each other on shared channels. Check the a2a-protocol skill before implementing."
+    "recommendation": "Works well for a two-agent homelab setup. The busy-flag is essential \u2014 without it the instances will talk over each other on shared channels. Check the a2a-protocol skill before implementing."
   },
   {
     "slug": "claude-code",
@@ -233,11 +379,24 @@
     "risk": "high",
     "relationship": "adjacent",
     "score": 3.6,
-    "best": ["large refactors where you want an autonomous coding pass", "PR review and inline comment workflows", "delegated coding tasks with well-defined scope"],
-    "notFor": ["anything touching production secrets or live infrastructure without a review gate", "tasks where you haven't defined the scope clearly first"],
-    "touches": ["filesystem", "shell", "git", "network", "secrets"],
+    "best": [
+      "large refactors where you want an autonomous coding pass",
+      "PR review and inline comment workflows",
+      "delegated coding tasks with well-defined scope"
+    ],
+    "notFor": [
+      "anything touching production secrets or live infrastructure without a review gate",
+      "tasks where you haven't defined the scope clearly first"
+    ],
+    "touches": [
+      "filesystem",
+      "shell",
+      "git",
+      "network",
+      "secrets"
+    ],
     "verified": "2026-06-16: skill orchestration tested. Delegation via claude-code skill works. External CLI auth required separately.",
-    "recommendation": "Powerful but earn the trust slowly. Use worktrees to isolate changes, set max-turns, define scope explicitly. Always diff before merging. The claude-code skill in Hermes encodes the safe delegation pattern — load it."
+    "recommendation": "Powerful but earn the trust slowly. Use worktrees to isolate changes, set max-turns, define scope explicitly. Always diff before merging. The claude-code skill in Hermes encodes the safe delegation pattern \u2014 load it."
   },
   {
     "slug": "hermes-webui-nesquena",
@@ -249,9 +408,18 @@
     "risk": "medium",
     "relationship": "compatible",
     "score": 3.4,
-    "best": ["remote access to Hermes from phone or browser", "users who aren't comfortable with a terminal"],
-    "notFor": ["operators who are fine in terminal and don't need a web layer"],
-    "touches": ["network", "gateway", "sessions"],
+    "best": [
+      "remote access to Hermes from phone or browser",
+      "users who aren't comfortable with a terminal"
+    ],
+    "notFor": [
+      "operators who are fine in terminal and don't need a web layer"
+    ],
+    "touches": [
+      "network",
+      "gateway",
+      "sessions"
+    ],
     "verified": "Not installed. High stars and active development are real signals. Haven't verified auth handling or secret exposure surface.",
     "recommendation": "Worth evaluating if you need non-terminal access. Any web UI sitting in front of an agent deserves a close look at auth and how it handles the gateway token. Don't expose it to the internet without auth."
   },
@@ -265,9 +433,20 @@
     "risk": "medium",
     "relationship": "compatible",
     "score": 3.5,
-    "best": ["operators who want a dashboard view into memory and skills alongside chat", "anyone who wants to inspect session state without using the terminal"],
-    "notFor": ["operators comfortable working in the CLI who don't need a dashboard layer"],
-    "touches": ["network", "gateway", "sessions", "memory", "skills"],
+    "best": [
+      "operators who want a dashboard view into memory and skills alongside chat",
+      "anyone who wants to inspect session state without using the terminal"
+    ],
+    "notFor": [
+      "operators comfortable working in the CLI who don't need a dashboard layer"
+    ],
+    "touches": [
+      "network",
+      "gateway",
+      "sessions",
+      "memory",
+      "skills"
+    ],
     "verified": "Not installed. The memory browser and skills manager panels are the interesting differentiator over simpler WebUIs.",
     "recommendation": "More interesting than a plain chat wrapper because of the inspector panel. Would want to verify how deeply it integrates vs. just proxying the gateway before committing."
   },
@@ -275,15 +454,27 @@
     "slug": "hermes-self-evolution",
     "name": "Hermes Self-Evolution",
     "repo": "NousResearch/hermes-agent-self-evolution",
-    "category": "skills",
+    "category": "advanced",
     "summary": "Official NousResearch project: evolutionary self-improvement via DSPy + GEPA. Optimizes skills, prompts, and code by running evaluation loops and keeping what scores better.",
     "status": "watchlist",
     "risk": "high",
     "relationship": "hermes-native",
     "score": 3.0,
-    "best": ["research and experimental self-improvement setups", "operators who want to automate skill quality improvement at scale"],
-    "notFor": ["production instances where you want stable, predictable behavior", "operators who haven't already built a solid skill corpus manually"],
-    "touches": ["skills", "prompts", "filesystem", "shell", "network"],
+    "best": [
+      "research and experimental self-improvement setups",
+      "operators who want to automate skill quality improvement at scale"
+    ],
+    "notFor": [
+      "production instances where you want stable, predictable behavior",
+      "operators who haven't already built a solid skill corpus manually"
+    ],
+    "touches": [
+      "skills",
+      "prompts",
+      "filesystem",
+      "shell",
+      "network"
+    ],
     "verified": "Not installed. Official repo, 4k+ stars. Conceptually powerful. Risky to run against a corpus you depend on without a full backup and rollback path.",
     "recommendation": "Fascinating project but treat it like surgery on a running system. Don't run it on your primary profile without a way to roll back. Worth watching as it matures."
   }
